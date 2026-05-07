@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Bubble Camp Downloader
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Bubble Camp Downloader
+    </h1>
+
+    <p>
+        Download videos and music up to 2K
+    </p>
+
+    <input
+        type="text"
+        id="videoUrl"
+        placeholder="Paste video URL here"
+    >
+
+    <button onclick="getVideoInfo()">
+        Get Video Info
+    </button>
+
+    <div
+        id="preview"
+        style="display:none;"
+    >
+
+        <img
+            id="thumbnail"
+            class="thumb"
+        >
+
+        <h2 id="videoTitle"></h2>
+
+        <select id="downloadType">
+
+            <option value="mp4">
+                MP4 Video
+            </option>
+
+            <option value="mp3">
+                MP3 Music
+            </option>
+
+        </select>
+
+        <select id="quality"></select>
+
+        <button onclick="downloadVideo()">
+            Download
+        </button>
+
+    </div>
+
+    <div class="progress-container">
+
+        <div id="progress-bar"></div>
+
+    </div>
+
+    <div id="status"></div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
