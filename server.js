@@ -32,7 +32,7 @@ app.post("/info", (req, res) => {
     }
 
     const command =
-        `python3 -m yt_dlp -j "${url}"`;
+        `yt-dlp -j "${url}"`;
 
     exec(command, (error, stdout, stderr) => {
 
@@ -144,12 +144,12 @@ app.post("/download", (req, res) => {
     if (type === "mp3") {
 
         command =
-        `python3 -m yt_dlp -x --audio-format mp3 --audio-quality 0 -o "downloads/audio.%(ext)s" "${url}"`;
+        `yt-dlp -x --audio-format mp3 --audio-quality 0 -o "downloads/audio.%(ext)s" "${url}"`;
 
     } else {
 
         command =
-        `python3 -m yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
+        `yt-dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
 
     }
 
