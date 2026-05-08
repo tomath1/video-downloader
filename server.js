@@ -90,7 +90,9 @@ app.post("/info", (req, res) => {
 
             });
 
-        } catch {
+        } catch (err) {
+
+            console.log(err);
 
             res.json({
 
@@ -142,7 +144,7 @@ app.post("/download", (req, res) => {
     if (type === "mp3") {
 
         command =
-        `python3 -m yt_dlp -x --audio-format mp3 -o "downloads/audio.%(ext)s" "${url}"`;
+        `python3 -m yt_dlp -x --audio-format mp3 --audio-quality 0 -o "downloads/audio.%(ext)s" "${url}"`;
 
     } else {
 
@@ -216,7 +218,7 @@ const PORT =
 app.listen(PORT, "0.0.0.0", () => {
 
     console.log(
-        `Server running on ${PORT}`
+        `Server running on port ${PORT}`
     );
 
 });
