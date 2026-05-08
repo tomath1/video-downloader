@@ -251,3 +251,58 @@ a:hover{
     }
 
 }
+
+.floating-buttons{
+
+    position:fixed;
+
+    bottom:20px;
+
+    right:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    z-index:999;
+
+}
+
+.floating-buttons a{
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:14px 18px;
+
+    border-radius:50px;
+
+    font-weight:600;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.3);
+
+    transition:.3s;
+
+}
+
+.whatsapp-btn{
+
+    background:#25D366;
+
+}
+
+.facebook-btn{
+
+    background:#1877F2;
+
+}
+
+.floating-buttons a:hover{
+
+    transform:scale(1.08);
+
+}
