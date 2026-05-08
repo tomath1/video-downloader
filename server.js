@@ -31,12 +31,7 @@ app.post("/info", async (req, res) => {
 
     }
 
-<<<<<<< HEAD
-    const command =
-        `python3 -m yt_dlp -j "${url}"`;
-=======
     try {
->>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
         const info =
             await youtubedl(url, {
@@ -102,10 +97,7 @@ app.post("/info", async (req, res) => {
 
 app.post("/download", async (req, res) => {
 
-    const {
-        url,
-        type
-    } = req.body;
+    const { url, type } = req.body;
 
     if (!url) {
 
@@ -121,8 +113,7 @@ app.post("/download", async (req, res) => {
 
     }
 
-    fs.readdirSync("downloads")
-    .forEach(file => {
+    fs.readdirSync("downloads").forEach(file => {
 
         fs.unlinkSync(
             path.join("downloads", file)
@@ -134,21 +125,11 @@ app.post("/download", async (req, res) => {
 
         if (type === "mp3") {
 
-<<<<<<< HEAD
-        command =
-        `python3 -m yt_dlp -x --audio-format mp3 -o "downloads/audio.%(ext)s" "${url}"`;
-=======
             await youtubedl(url, {
->>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
                 extractAudio: true,
 
-<<<<<<< HEAD
-        command =
-        `python3 -m yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
-=======
                 audioFormat: "mp3",
->>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
                 audioQuality: 0,
 
@@ -229,14 +210,7 @@ const PORT =
 app.listen(PORT, "0.0.0.0", () => {
 
     console.log(
-
-        `Server running on ${PORT}`
-    );
-
-});
-
         `Server running on port ${PORT}`
     );
 
 });
-
