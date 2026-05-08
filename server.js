@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const { exec } = require("child_process");
 const path = require("path");
 const fs = require("fs");
+
+const youtubedl = require("yt-dlp-exec");
 
 const app = express();
 
@@ -18,95 +19,88 @@ app.use(
     )
 );
 
-app.post("/info", (req, res) => {
+app.post("/info", async (req, res) => {
 
     const { url } = req.body;
 
     if (!url) {
 
         return res.json({
-            success: false,
-            error: "No URL"
+            success: false
         });
 
     }
 
+<<<<<<< HEAD
     const command =
         `python3 -m yt_dlp -j "${url}"`;
+=======
+    try {
+>>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
-    exec(command, (error, stdout, stderr) => {
+        const info =
+            await youtubedl(url, {
 
-        if (error) {
+                dumpSingleJson: true,
 
-            console.log(stderr);
+                noWarnings: true,
 
-            return res.json({
-
-                success: false,
-
-                error: stderr
-
-            });
-
-        }
-
-        try {
-
-            const info =
-                JSON.parse(stdout);
-
-            const formats =
-                info.formats
-
-                .filter(f => f.height)
-
-                .filter(f => f.height <= 2160)
-
-                .map(f => ({
-                    format_id: f.format_id,
-                    height: f.height
-                }))
-
-                .filter(
-                    (value, index, self) =>
-                        index === self.findIndex(
-                            t => t.height === value.height
-                        )
-                )
-
-                .sort((a, b) =>
-                    b.height - a.height
-                );
-
-            res.json({
-
-                success: true,
-
-                title: info.title,
-
-                thumbnail: info.thumbnail,
-
-                formats
+                noCallHome: true
 
             });
 
-        } catch {
+        const formats =
+            info.formats
 
-            res.json({
+            .filter(f => f.height)
 
-                success: false,
+            .filter(f => f.height <= 2160)
 
-                error: "Video info error"
+            .map(f => ({
+                format_id: f.format_id,
+                height: f.height
+            }))
 
-            });
+            .filter(
+                (value, index, self) =>
+                    index === self.findIndex(
+                        t => t.height === value.height
+                    )
+            )
 
-        }
+            .sort((a, b) =>
+                b.height - a.height
+            );
 
-    });
+        res.json({
+
+            success: true,
+
+            title: info.title,
+
+            thumbnail: info.thumbnail,
+
+            formats
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.json({
+
+            success: false,
+
+            error: "Video info error"
+
+        });
+
+    }
 
 });
 
-app.post("/download", (req, res) => {
+app.post("/download", async (req, res) => {
 
     const {
         url,
@@ -116,8 +110,7 @@ app.post("/download", (req, res) => {
     if (!url) {
 
         return res.json({
-            success: false,
-            error: "No URL"
+            success: false
         });
 
     }
@@ -137,31 +130,44 @@ app.post("/download", (req, res) => {
 
     });
 
-    let command = "";
+    try {
 
-    if (type === "mp3") {
+        if (type === "mp3") {
 
+<<<<<<< HEAD
         command =
         `python3 -m yt_dlp -x --audio-format mp3 -o "downloads/audio.%(ext)s" "${url}"`;
+=======
+            await youtubedl(url, {
+>>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
-    } else {
+                extractAudio: true,
 
+<<<<<<< HEAD
         command =
         `python3 -m yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
+=======
+                audioFormat: "mp3",
+>>>>>>> adb4464aa7a1f415e2c4d9efee9fbc4c3fe238c6
 
-    }
+                audioQuality: 0,
 
-    exec(command, (error, stdout, stderr) => {
+                output:
+                "downloads/audio.%(ext)s"
 
-        if (error) {
+            });
 
-            console.log(stderr);
+        } else {
 
-            return res.json({
+            await youtubedl(url, {
 
-                success: false,
+                format:
+                "bestvideo+bestaudio/best",
 
-                error: stderr
+                mergeOutputFormat: "mp4",
+
+                output:
+                "downloads/video.%(ext)s"
 
             });
 
@@ -174,27 +180,34 @@ app.post("/download", (req, res) => {
 
             return res.json({
 
-                success: false,
-
-                error: "No file found"
+                success: false
 
             });
 
         }
-
-        const file =
-            files[0];
 
         res.json({
 
             success: true,
 
             file:
-            `/downloads/${file}`
+            `/downloads/${files[0]}`
 
         });
 
-    });
+    } catch (err) {
+
+        console.log(err);
+
+        res.json({
+
+            success: false,
+
+            error: "Download failed"
+
+        });
+
+    }
 
 });
 
@@ -216,7 +229,14 @@ const PORT =
 app.listen(PORT, "0.0.0.0", () => {
 
     console.log(
+
         `Server running on ${PORT}`
     );
 
 });
+
+        `Server running on port ${PORT}`
+    );
+
+});
+
