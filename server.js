@@ -3,7 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
-const youtubedl = require("yt-dlp-exec");
+const youtubedl = require("yt-dlp-exec").default;
 
 const app = express();
 
@@ -19,6 +19,8 @@ app.use(
     )
 );
 
+const yt = youtubedl.create();
+
 app.post("/info", async (req, res) => {
 
     const { url } = req.body;
@@ -33,16 +35,13 @@ app.post("/info", async (req, res) => {
 
     try {
 
-        const info =
-            await youtubedl(url, {
+        const info = await yt(url, {
 
-                dumpSingleJson: true,
+            dumpSingleJson: true,
+            noWarnings: true,
+            noCallHome: true
 
-                noWarnings: true,
-
-                noCallHome: true
-
-            });
+        });
 
         const formats =
             info.formats
@@ -86,7 +85,6 @@ app.post("/info", async (req, res) => {
         res.json({
 
             success: false,
-
             error: "Video info error"
 
         });
@@ -125,12 +123,10 @@ app.post("/download", async (req, res) => {
 
         if (type === "mp3") {
 
-            await youtubedl(url, {
+            await yt(url, {
 
                 extractAudio: true,
-
                 audioFormat: "mp3",
-
                 audioQuality: 0,
 
                 output:
@@ -140,7 +136,7 @@ app.post("/download", async (req, res) => {
 
         } else {
 
-            await youtubedl(url, {
+            await yt(url, {
 
                 format:
                 "bestvideo+bestaudio/best",
@@ -160,9 +156,7 @@ app.post("/download", async (req, res) => {
         if (files.length === 0) {
 
             return res.json({
-
                 success: false
-
             });
 
         }
@@ -183,7 +177,6 @@ app.post("/download", async (req, res) => {
         res.json({
 
             success: false,
-
             error: "Download failed"
 
         });
