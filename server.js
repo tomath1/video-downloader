@@ -32,7 +32,7 @@ app.post("/info", (req, res) => {
     }
 
     const command =
-        `python -m yt_dlp -j "${url}"`;
+        `python3 -m yt_dlp -j "${url}"`;
 
     exec(command, (error, stdout, stderr) => {
 
@@ -142,12 +142,12 @@ app.post("/download", (req, res) => {
     if (type === "mp3") {
 
         command =
-        `python -m yt_dlp -x --audio-format mp3 -o "downloads/audio.%(ext)s" "${url}"`;
+        `python3 -m yt_dlp -x --audio-format mp3 -o "downloads/audio.%(ext)s" "${url}"`;
 
     } else {
 
         command =
-        `python -m yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
+        `python3 -m yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 -o "downloads/video.%(ext)s" "${url}"`;
 
     }
 
@@ -210,16 +210,13 @@ app.get("*", (req, res) => {
 
 });
 
-    const PORT = process.env.PORT || 5000;
+const PORT =
+    process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
 
-    console.log(`Server running on ${PORT}`);
-
-});
-
-
     console.log(
-        "Server running on http://localhost:5000"
+        `Server running on ${PORT}`
     );
 
+});
